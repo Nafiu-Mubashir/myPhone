@@ -16,9 +16,9 @@
 </head>
 
 <body>
-    <section id="sect-two" class="container-fluid">
+    <section id="sect-two" class="container-fluid d-flex">
         <div class="card bg-dark mt-3 ms-3 p-1 m-auto">
-            <div class="card-body" id="lockScreen" hiden>
+            <div class="card-body" id="lockScreen" hidden>
                 <div class="lockUp">
                     <i class="fa fa-signal text-white ms-auto"></i>
                     <i class="fa fa-signal text-white"></i>
@@ -376,13 +376,13 @@
             <div class="card-body" id="voucherScreen" hidden>
                 <div>
                     <h3 class="text-white text-center mt-3">Voucher</h3>
-                    <input type="text" class="form-control w-75" id="num">
+                    <input type="text" class="form-control w-75" placeholder="Number of airtimes to generate" id="num">
                     <select name="" id="networks" class="btn bg-white w-75 mt-2">
                         <option value="" selected disabled>Choose Network</option>
                         <option value="MTN">MTN</option>
                         <option value="GLO">GLO</option>
-                        <option value="AIRTEL">AIRTEL</option>
-                        <option value="9MOBILE">9MOBILE</option>
+                        <!-- <option value="AIRTEL">AIRTEL</option>
+                        <option value="9MOBILE">9MOBILE</option> -->
                     </select>
                     <select name="" id="amounts" class="btn bg-white w-75 mt-2">
                         <option value="" selected disabled>Choose Amount</option>
@@ -401,7 +401,8 @@
                 </div>
             </div>
 
-            <div class="card-body" id="callScreen" hidden>
+            <div class="card-body" id="callScreen" hiden>
+                <div id="acctBal" class="w-75 bg-dark text-white p-2" hidden></div>
                 <div class="keys">
                     <table class="table bg-white">
                         <div class="d-flex">
@@ -434,7 +435,7 @@
                     <div class="dials">
                         <button class="btn btn-success"><i class="fa fa-phone text-white"
                                 onclick="callOne()"><sup>1</sup></i></button>
-                        <button class="btn btn-success"><i class="fa fa-phone text-white"><sup>2</sup></i></button>
+                        <button class="btn btn-success" onclick="callTwo()"><i class="fa fa-phone text-white"><sup>2</sup></i></button>
                     </div>
                     <div class="returnButttons">
                         <i class="fa fa-window-minimize text-secondary" onclick="home()"></i>
@@ -557,6 +558,33 @@
                         </table>
                     </form>
                 </div>
+            </div>
+        </div>
+        <div class="card bg-dark mt-3 ms-3 p-1 m-auto">
+            <div class="card-body bg-primary" id="reciever">
+                <div class="mt-5">
+                    <p class="text-white">Incoming call via <span id="network"></span></p>
+                </div>
+                <div class="w-50 mx-auto mt-5 ml-5">
+                 <img src="image/maleuser.png" alt="" class="ms-3">
+                </div>
+                <div class="w-75 mx-auto mt-5 callicon">
+                    <img src="image/speaker.png" alt="" class="ms-3">
+                    <img src="image/mute.png" alt="" class="ms-5">
+                    <img src="image/bullet.png" alt="" class="ms-5">
+                </div>
+                <div class="mx-auto mt-5 d-flex">
+                    <div>
+                        <div class="bg-success callAnswer mt-2  ml-5 shadow-sm" id="reccall" onclick="receiveCall()">
+                            <img src="image/phone1.png" class="w-100 h-100">
+                        </div>
+                    </div>
+                    <div class="ms-5 pl-2">
+                        <div class="bg-danger callAnswer mt-2 ml-5 shadow-sm" id="endcall" onclick="endCall()">
+                            <img src="image/phone1.png" class="w-100 h-100">
+                        </div>
+                    </div>
+                </div>	
             </div>
         </div>
     </section>
