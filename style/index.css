@@ -1,6 +1,6 @@
 .card {
     height: 90vh;
-    width: 330px;
+    width: 310px;
     border-radius: 20px;
     position: relative;
     /* left: 300px; */
@@ -13,7 +13,7 @@
     height: 30px;
     border-radius: 100%;
     background-color: #212529;
-    left: 156px;
+    left: 145px;
     top: -1px;
 }
 
@@ -120,11 +120,13 @@ body {
 
 
 .lockUp {
-    margin-left: 226px;
+    margin-left: 205px;
 }
 
 .lockDown {
-    margin-top: 380px;
+    /* margin-top: 380px; */
+    position: absolute;
+    top: 485px;
 }
 
 .lock-text:hover {
@@ -140,7 +142,7 @@ body {
 
 .fa-lock,
 .fa-camera {
-    margin-left: 119.5px;
+    margin-left: 110px;
 }
 
 
@@ -302,7 +304,8 @@ input {
 
 .like {
     overflow-y: scroll;
-    height: 70vh;
+    overflow-x: hidden;
+    height: 75vh;
 }
 
 .like::-webkit-scrollbar {
@@ -364,10 +367,8 @@ input {
     top: 5px;
 }
 
+/* Call Log interface */
 #callScreen {
-    /* background-image: url("../image/Screenshot.png");
-    background-repeat: no-repeat;
-    background-size: cover; */
     background-color: white;
     border-radius: 20px;
     height: 88.5vh;
@@ -376,7 +377,7 @@ input {
 
 .keys {
     width: 100%;
-    margin-top: 280px;
+    margin-top: 270px;
 }
 
 .table {
@@ -384,14 +385,14 @@ input {
 }
 
 .dials {
-    margin-left: 100px;
+    margin-left: 90px;
 }
 
 .dials .btn-success {
     border-radius: 100%;
     width: 40px;
     height: 40px;
-    margin: 2px;
+    margin: 0px !important;
 }
 
 .input-group-text {
@@ -417,7 +418,7 @@ span {
 }
 
 .returnButton {
-    margin-top: 380px;
+    position: relative;
 }
 
 .returnButton,
@@ -426,17 +427,14 @@ span {
     cursor: pointer;
 }
 
-.fa-window-minimize,
-.fa-chevron-left {
-    margin-left: 127px;
+.fa-window-minimize {
+    position: absolute;
+    left: 140px;
 }
 
-#acctBalance {
-    background: linear-gradient(rgba(32, 31, 31, 0.5), rgba(37, 35, 35, 0.5));
+.fa-chevron-left {
     position: absolute;
-    top: 125px;
-    left: 35px;
-    width: 80%;
+    left: 250px;
 }
 
 .counter {
@@ -463,6 +461,7 @@ span {
     margin-left: 0px;
 }
 
+/* Game interface */
 #gameScreen {
     background-image: url("../image/controller.jpg");
     background-size: cover;
@@ -551,6 +550,15 @@ tr button {
     }
 }
 
+#callerId {
+    background: linear-gradient(rgba(26, 1, 94, 0.845), rgba(6, 1, 47, 0.919)), url("../image/wall5.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 20px;
+    height: 88.5vh;
+}
+
+/* For reciever call interface */
 #calculator .tr td button {
     width: 10px;
 }
@@ -558,15 +566,27 @@ tr button {
 #acctBal {
     position: absolute;
     top: 120px;
-    left: 40px;
+    left: 30px;
+}
+
+#noError {
+    position: absolute;
+    top: 120px;
+    left: 30px;
 }
 
 #reciever {
+    background: linear-gradient(rgba(26, 1, 94, 0.845), rgba(6, 1, 47, 0.919)), url("../image/wall4.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
     border-radius: 20px;
+    height: 88.5vh;
 }
-#reciver div{
+
+#reciver div {
     border: 1px thick white;
 }
+
 .user {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -579,21 +599,47 @@ tr button {
     border: white;
 }
 
-.callAnswer{
+.callAnswer {
     border-radius: 50px;
     height: 50px;
     width: 50px;
     padding: 1em;
 }
 
+.callBtn {
+    position: absolute;
+    top: 420px;
+}
 
+#endcall {
+    margin-left: 60px;
+}
+
+.callicon div {
+    background: #969696;
+    border-radius: 50px;
+    height: 50px;
+    width: 50px;
+    /* padding: 1em; */
+    align-items: center;
+}
+
+.callicon div img {
+    margin-top: 12px;
+}
+
+/*Media Query start */
 @media (max-width: 700px) {
     .card {
-        width: 330px !important;
+        width: 100% !important;
         margin: 0px;
         height: auto;
-        top: 10px;
+        top: 0px !important;
         left: 0px !important;
+    }
+
+    section {
+        flex-direction: column;
     }
 
     button {
@@ -613,21 +659,88 @@ tr button {
     }
 
     .lockUp {
-        margin-left: 205px !important;
+        margin-left: 170px !important;
+    }
+
+    .lockDown {
+        /* margin-top: 380px; */
+        position: absolute;
+        top: 450px;
+    }
+
+    .fa-lock,
+    .fa-camera {
+        margin-left: 95px;
     }
 
     #mic {
         position: absolute;
         width: 10px;
-        left: 200px;
+        left: 100px;
         top: 10px;
     }
 
     #lense {
         position: absolute;
         width: 15px;
-        left: 220px;
+        left: 100px;
         top: 10px;
+    }
+
+    .keys {
+        width: 100%;
+        margin-top: 230px;
+    }
+
+    .dials {
+        margin-left: 75px;
+    }
+
+    .fa-window-minimize {
+        position: absolute;
+        left: 130px;
+    }
+
+    .fa-chevron-left {
+        position: absolute;
+        left: 230px;
+    }
+
+    /* For reciever call interface */
+    .card {
+        height: 95vh;
+        width: 280px !important;
+        border-radius: 20px;
+        position: relative;
+        margin-left: 0px !important;
+    }
+
+    .card::after {
+        content: " ";
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        border-radius: 100%;
+        background-color: #212529;
+        left: 128px !important;
+        top: -1px;
+    }
+
+    .callicon {
+        width: 100% !important;
+    }
+
+    .callicon .ms-3 {
+        margin-left: 0px !important;
+    }
+
+    .callBtn {
+        position: absolute;
+        top: 400px;
+    }
+
+    #endcall {
+        margin-left: 40px;
     }
 
 }

@@ -17,10 +17,35 @@
 
 <body>
     <section id="sect-two" class="container-fluid d-flex">
+        <!-- <div class="card bg-dark mt-3 ms-3 p-1 m-auto">
+            <div class="card-body m-auto">
+                <div>
+                    <h3 class="text-white text-center mt-3">Voucher</h3>
+                    <input type="text" class="form-control w-75" placeholder="Number of airtimes to generate" id="num">
+                    <select name="" id="networks" class="btn bg-white w-75 mt-2">
+                        <option value="" selected disabled>Choose Network</option>
+                        <option value="MTN">MTN</option>
+                        <option value="GLO">GLO</option>
+                    </select>
+                    <select name="" id="amounts" class="btn bg-white w-75 mt-2">
+                        <option value="" selected disabled>Choose Amount</option>
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                        <option value="500">500</option>
+                        <option value="1000">1000</option>
+                    </select>
+                    <div class="d-flex">
+                        <button class="btn btn-success mt-3" onclick="generate()">Generate</button>
+                    <button class="btn btn-success mt-3" onclick="display()">Display</button>
+                    </div>
+                    <div id="output" class="text-dark text-center bg-dark mt-2"></div>
+                </div>
+            </div>
+        </div> -->
         <div class="card bg-dark mt-3 ms-3 p-1 m-auto">
-            <div class="card-body" id="lockScreen" hidden>
+            <div class="card-body" id="lockScreen" hiden>
                 <div class="lockUp">
-                    <i class="fa fa-signal text-white ms-auto"></i>
+                    <i class="fa fa-signal text-white "></i>
                     <i class="fa fa-signal text-white"></i>
                     <i class="fa fa-battery-full text-white"></i>
                 </div>
@@ -115,6 +140,35 @@
                 </div>
             </div>
             <!-- <div class="card-body" id="lockScreen"> -->
+                <div class="card-body m-auto" id="voucherScreen" hidden>
+                    <div>
+                        <h3 class="text-white text-center mt-3">Voucher</h3>
+                        <input type="text" class="form-control w-75" placeholder="Number of airtimes to generate" id="num">
+                        <select name="" id="networks" class="btn bg-white w-75 mt-2">
+                            <option value="" selected disabled>Choose Network</option>
+                            <option value="MTN">MTN</option>
+                            <option value="GLO">GLO</option>
+                            <!-- <option value="AIRTEL">AIRTEL</option>
+                            <option value="9MOBILE">9MOBILE</option> -->
+                        </select>
+                        <select name="" id="amounts" class="btn bg-white w-75 mt-2">
+                            <option value="" selected disabled>Choose Amount</option>
+                            <option value="100">100</option>
+                            <option value="200">200</option>
+                            <option value="500">500</option>
+                            <option value="1000">1000</option>
+                        </select>
+                        <div class="d-flex w-75">
+                            <button class="btn btn-success mt-3" onclick="generate()">Generate</button>
+                        <button class="btn btn-success mt-3" onclick="display()">Display</button>
+                        </div>
+                        <div id="output" class="text-dark text-center bg-dark mt-2"></div>
+                    </div>
+                    <div class="returnButttons">
+                        <i class="fa fa-window-minimize text-secondary" onclick="home()"></i>
+                        <i class="fa fa-chevron-left text-secondary" onclick="back()"></i>
+                    </div>
+                </div>
             <div class="card-body" id="menuScreen" hidden>
                 <div class="menuUp d-flex">
                     <div class="tym text-white">
@@ -373,36 +427,8 @@
                 </div>
             </div>
 
-            <div class="card-body" id="voucherScreen" hidden>
-                <div>
-                    <h3 class="text-white text-center mt-3">Voucher</h3>
-                    <input type="text" class="form-control w-75" placeholder="Number of airtimes to generate" id="num">
-                    <select name="" id="networks" class="btn bg-white w-75 mt-2">
-                        <option value="" selected disabled>Choose Network</option>
-                        <option value="MTN">MTN</option>
-                        <option value="GLO">GLO</option>
-                        <!-- <option value="AIRTEL">AIRTEL</option>
-                        <option value="9MOBILE">9MOBILE</option> -->
-                    </select>
-                    <select name="" id="amounts" class="btn bg-white w-75 mt-2">
-                        <option value="" selected disabled>Choose Amount</option>
-                        <option value="100">100</option>
-                        <option value="200">200</option>
-                        <option value="500">500</option>
-                        <option value="1000">1000</option>
-                    </select>
-                    <button class="btn btn-success mt-3" onclick="generate()">Generate</button>
-                    <button class="btn btn-success mt-3" onclick="display()">Display</button>
-                    <div id="output" class="text-dark text-center bg-dark mt-2"></div>
-                </div>
-                <div class="returnButttons">
-                    <i class="fa fa-window-minimize text-secondary" onclick="home()"></i>
-                    <i class="fa fa-chevron-left text-secondary" onclick="back()"></i>
-                </div>
-            </div>
-
-            <div class="card-body" id="callScreen" hiden>
-                <div id="acctBal" class="w-75 bg-dark text-white p-2" hidden></div>
+            <div class="card-body" id="callScreen" hidden>
+                <div id="acctBal" class="w-75 bg-dark text-white p-2 text-center" hidden></div>
                 <div class="keys">
                     <table class="table bg-white">
                         <div class="d-flex">
@@ -442,6 +468,35 @@
                         <i class="fa fa-chevron-left text-secondary" onclick="back()"></i>
                     </div>
                 </div>
+            </div>
+            
+            <div class="card-body bg-primary" id="callerId" hidden>
+                <div id="noError" class="w-75 bg-dark text-white p-2 text-center" hidden></div>
+                <div class="mt-5">
+                    <p class="text-white">Calling via <b id="networkId"></b></p>
+                    <h5 class="text-white" id="callers"></h5>
+                </div>
+                <div class="w-50 mx-auto mt-5 ml-5">
+                 <img src="image/maleuser.png" alt="" class="ms-3">
+                </div>
+                <div class="w-100 mx-auto mt-5 callicon d-flex">
+                    <div class="ms-3">
+                        <img src="image/speaker.png" alt="" class="d-block mx-auto">
+                    </div>
+                    <div class="ms-5">
+                        <img src="image/mute.png" alt=""  class="d-block mx-auto">
+                    </div>
+                    <div class="ms-5">
+                        <img src="image/bullet.png" alt=""  class="d-block mx-auto">
+                    </div>
+                </div>
+                <div class="m-auto mt-5 d-flex w-75 callBtn">
+                    <div class="ms-5">
+                        <div class="bg-danger callAnswer mt-2 ml-5 shadow-sm" id="endcall" onclick="endCall()">
+                            <img src="image/phone1.png" class="w-100 h-100">
+                        </div>
+                    </div>
+                </div>	
             </div>
 
             <div class="card-body" id="alarmScreen" hidden>
@@ -560,26 +615,33 @@
                 </div>
             </div>
         </div>
-        <div class="card bg-dark mt-3 ms-3 p-1 m-auto">
+        <div class="card bg-dark mt-3 ms-3 p-1 m-auto reciever" id="recieverId" hidden>
             <div class="card-body bg-primary" id="reciever">
                 <div class="mt-5">
-                    <p class="text-white">Incoming call via <span id="network"></span></p>
+                    <p class="text-white">Incoming call via <b id="network"></b></p>
+                    <h5 class="text-white" id="caller"></h5>
                 </div>
                 <div class="w-50 mx-auto mt-5 ml-5">
                  <img src="image/maleuser.png" alt="" class="ms-3">
                 </div>
-                <div class="w-75 mx-auto mt-5 callicon">
-                    <img src="image/speaker.png" alt="" class="ms-3">
-                    <img src="image/mute.png" alt="" class="ms-5">
-                    <img src="image/bullet.png" alt="" class="ms-5">
+                <div class="w-100 mx-auto mt-5 callicon d-flex">
+                    <div class="ms-3">
+                        <img src="image/speaker.png" alt="" class="d-block mx-auto">
+                    </div>
+                    <div class="ms-5">
+                        <img src="image/mute.png" alt=""  class="d-block mx-auto">
+                    </div>
+                    <div class="ms-5">
+                        <img src="image/bullet.png" alt=""  class="d-block mx-auto">
+                    </div>
                 </div>
-                <div class="mx-auto mt-5 d-flex">
-                    <div>
+                <div class="m-auto mt-5 d-flex w-75 callBtn">
+                    <div class="ms-4">
                         <div class="bg-success callAnswer mt-2  ml-5 shadow-sm" id="reccall" onclick="receiveCall()">
                             <img src="image/phone1.png" class="w-100 h-100">
                         </div>
                     </div>
-                    <div class="ms-5 pl-2">
+                    <div class="ms-5">
                         <div class="bg-danger callAnswer mt-2 ml-5 shadow-sm" id="endcall" onclick="endCall()">
                             <img src="image/phone1.png" class="w-100 h-100">
                         </div>

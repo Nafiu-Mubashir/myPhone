@@ -363,15 +363,101 @@ function callOne() {
         if (displayBal.mtnBal <= 0.50) {
             acctBal.innerHTML = `Your account balance is too low for this call. You can borrow airtime or call back later. <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
             acctBal.hidden = false;
-            
+
+        } else if (displayBal.mtnBal != 0) {
+            network.innerText = `MTN...`;
+            networkId.innerText = `MTN...`;
+            caller.innerHTML = `08039134204`;
+            callers.innerHTML = keyScreen.value;
+            callScreen.hidden = true;
+            callerId.hidden = false;
+            recieverId.hidden = false;
+            callerTune = new Audio('audio/harris_j_good_life_official_music_video_aac_66534.m4a');
+            callerTune.play();
         }
-        else if (displayBal.mtnBal != 0) {
-            network.innerText = `MTN...`
+    } else if ((keyScreen.value != "") && (keyScreen.value.length == 11) && ((keyScreen.value.slice(0, 3) != "070") || (keyScreen.value.slice(0, 3) != "080") || (keyScreen.value.slice(0, 3) != "090") || (keyScreen.value.slice(0, 3) != "081"))) {
+        callScreen.hidden = true;
+        callerId.hidden = false;
+        noError.innerHTML = `This number does not exist.please, check the number and try again later. <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
+        noError.hidden = false;
+        callers.innerHTML = keyScreen.value;
+        networkId.innerText = `MTN...`;
+    }
+    else{
+        callScreen.hidden = true;
+        callerId.hidden = false;
+        noError.innerHTML = `This number does not exist.please, check the number and try again later. <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
+        noError.hidden = false;
+        callers.innerHTML = keyScreen.value;
+        networkId.innerText = `MTN...`;
+    }
+}
+function callTwo() {
+    let loadCard = keyScreen.value.slice(0, 5) == "*123*";
+    let myData = myAirtimes.find((val, i) => val.cardNo == keyScreen.value.slice(5, 22))
+    if (keyScreen.value.length == 23) {
+        for (let i = 0; i < myAirtimes.length; i++) {
+            cardCode = myAirtimes[i].cardNo;
+            if ((loadCard) && (myData) && (keyScreen.value.slice(22, 23) == "#") && (myData.cardType == "GLo") && (myData.cardStatus == "notUsed")) {
+                console.log(keyScreen.value.slice(5, 22));
+                myData.cardStatus = "Used";
+                console.log(myData.cardStatus);
+                let bal = +myData.cardAmount;
+                let balances = JSON.parse(localStorage.getItem("acctBals"));
+                balances.mtnBal += bal;
+                acctBal.innerHTML = `Recharge successful. Your account has been credited with MTN ${myAirtimes.cardAmount}. Your new account bal :₦${balances.mtnBal.toFixed(2)} <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
+                acctBal.hidden = false;
+                localStorage.setItem("acctBals", JSON.stringify(balances));
+                localStorage.setItem("allVouchers", JSON.stringify(myAirtimes));
+            } else if ((loadCard) && (myData) && (keyScreen.value.slice(22, 23) == "#") && (myData.cardType == "GLO") && (myData.cardStatus == "Used")) {
+                acctBal.innerHTML = `This card has been loaded by a customer. Thanks!!! <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
+                acctBal.hidden = false;
+            }
         }
+    } else if (keyScreen.value.slice(0, 5) == "*124#") {
+        acctBal.hidden = false;
+        let displayBal = JSON.parse(localStorage.getItem("acctBals"));
+        let showBal = displayBal.gloBal;
+        acctBal.innerHTML = `Your GLO account balance is ₦${showBal.toFixed(2)} <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
+    } else if ((keyScreen.value != "") && (keyScreen.value.length == 11) && ((keyScreen.value.slice(0, 3) == "070") || (keyScreen.value.slice(0, 3) == "080") || (keyScreen.value.slice(0, 3) == "090") || (keyScreen.value.slice(0, 3) == "081"))) {
+        let displayBal = JSON.parse(localStorage.getItem("acctBals"));
+        if (displayBal.mtnBal <= 0.50) {
+            acctBal.innerHTML = `Your account balance is too low for this call. You can borrow airtime or call back later. <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
+            acctBal.hidden = false;
+
+        } else if (displayBal.mtnBal != 0) {
+            network.innerText = `GLO...`;
+            networkId.innerText = `GLO...`;
+            caller.innerHTML = `08039134204`;
+            callers.innerHTML = keyScreen.value;
+            callScreen.hidden = true;
+            callerId.hidden = false;
+            recieverId.hidden = false;
+            callerTune = new Audio('audio/harris_j_good_life_official_music_video_aac_66534.m4a');
+            callerTune.play();
+        }
+    } else if ((keyScreen.value != "") && (keyScreen.value.length == 11) && ((keyScreen.value.slice(0, 3) != "070") || (keyScreen.value.slice(0, 3) != "080") || (keyScreen.value.slice(0, 3) != "090") || (keyScreen.value.slice(0, 3) != "081"))) {
+        callScreen.hidden = true;
+        callerId.hidden = false;
+        noError.innerHTML = `This number does not exist.please, check the number and try again later. <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
+        noError.hidden = false;
+        callers.innerHTML = keyScreen.value;
+        networkId.innerText = `GLO...`;
+    }
+    else{
+        callScreen.hidden = true;
+        callerId.hidden = false;
+        noError.innerHTML = `This number does not exist.please, check the number and try again later. <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
+        noError.hidden = false;
+        callers.innerHTML = keyScreen.value;
+        networkId.innerText = `GLO...`;
     }
 }
 
 hide = () => {
     acctBal.hidden = true;
+    noError.hidden = true;
+    callerId.hidden = true;
+    callScreen.hidden = false;
     keyScreen.value = "";
 }
