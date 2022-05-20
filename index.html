@@ -43,7 +43,7 @@
             </div>
         </div> -->
         <div class="card bg-dark mt-3 ms-3 p-1 m-auto">
-            <div class="card-body" id="lockScreen" hidden>
+            <div class="card-body" id="lockScreen" hdden>
                 <div class="lockUp">
                     <i class="fa fa-signal text-white "></i>
                     <i class="fa fa-signal text-white"></i>
@@ -55,8 +55,7 @@
                     id="currentSec"></span> -->
                 </div>
                 <div class="lockDown">
-                    <p class="text-center text-white lock-text"><i class="fa fa-chevron-up"></i><br> swipe to unclock
-                    </p>
+                    <p class="text-center text-white lock-text"><i class="fa fa-chevron-up"></i><br> click the lock to unclock</p>
                     <i class="fa fa-phone text-white"></i>
                     <i class="fa fa-lock text-white" onclick="unlock()"></i>
                     <i class="fa fa-camera text-white"></i>
@@ -427,7 +426,7 @@
                 </div>
             </div>
 
-            <div class="card-body" id="callScreen" hdden>
+            <div class="card-body" id="callScreen" hidden>
                 <div id="acctBal" class="w-75 bg-dark text-white p-2 text-center" hidden></div>
                 <div class="keys">
                     <table class="table bg-white">
@@ -471,13 +470,19 @@
             </div>
             
             <div class="card-body bg-primary" id="callerId" hidden>
-                <div id="noError" class="w-75 bg-dark text-white p-2 text-center" hidden></div>
-                <div class="mt-5">
-                    <p class="text-white">Calling via <b id="networkId"></b></p>
-                    <h5 class="text-white" id="callers"></h5>
+                <div class="lockUp">
+                    <i class="fa fa-signal text-white "></i>
+                    <i class="fa fa-signal text-white"></i>
+                    <i class="fa fa-battery-full text-white"></i>
                 </div>
+                <div id="noError" class="w-75 bg-dark text-white p-2 text-center" hidden></div>
                 <div class="w-50 mx-auto mt-5 ml-5">
-                 <img src="image/maleuser.png" alt="" class="ms-3">
+                    <img src="image/maleuser.png" alt="" class="ms-3">
+                </div>
+                <div class="mt-3 mx-auto via text-center">
+                    <p class="text-white" id="ons">Calling via <b id="networkId"></b></p>
+                    <h5 class="text-white" id="callers"></h5>
+                    <p class="text-white" id="durs"><b><span id="hrss"></span> : <span id="minss"></span> : <span id="secss"></span></b></p>
                 </div>
                 <div class="w-100 mx-auto mt-5 callicon d-flex">
                     <div class="ms-3">
@@ -617,12 +622,18 @@
         </div>
         <div class="card bg-dark mt-3 ms-3 p-1 m-auto reciever" id="recieverId" hidden>
             <div class="card-body bg-primary" id="reciever">
-                <div class="mt-5">
-                    <p class="text-white">Incoming call via <b id="network"></b></p>
-                    <h5 class="text-white" id="caller"></h5>
+                <div class="lockUp">
+                    <i class="fa fa-signal text-white "></i>
+                    <i class="fa fa-signal text-white"></i>
+                    <i class="fa fa-battery-full text-white"></i>
                 </div>
                 <div class="w-50 mx-auto mt-5 ml-5">
-                 <img src="image/maleuser.png" alt="" class="ms-3">
+                    <img src="image/maleuser.png" alt="" class="ms-3">
+                </div>
+                <div class="mt-3 text-center">
+                    <p class="text-white" id="on">Incoming call via <b id="network"></b></p>
+                    <h5 class="text-white" id="caller"></h5>
+                    <p class="text-white" id="dur"><b><span id="hrs"></span> : <span id="mins"></span> : <span id="secs"></span></b></p>
                 </div>
                 <div class="w-100 mx-auto mt-5 callicon d-flex">
                     <div class="ms-3">

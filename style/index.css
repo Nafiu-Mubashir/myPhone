@@ -742,5 +742,9 @@ tr button {
     #endcall {
         margin-left: 40px;
     }
+    .via{
+        width: 100% !important;
+        text-align: center;
+    }
 
 }

@@ -326,17 +326,20 @@ function del() {
     displayOutput.value = c
 }
 let balance = {
-    mtnBal: 0,
-    gloBal: 0
+    mtnBal: 0.00,
+    gloBal: 0.00
 }
+let callerTune1 = new Audio('audio/harris_j_good_life_official_music_video_aac_66534.m4a');
+let callerTune2 = new Audio('audio/harris_j_let_me_breathe_official_audio_mp3_72528.mp3');
+let lowCredit = new Audio('audio/lowcredit.mp3')
 if (localStorage.acctBalances == null) {
     localStorage.setItem("acctBalances", "");
 }
 if (localStorage.acctBalances == "") {
     localStorage.setItem("acctBalances", JSON.stringify(balance))
 }
-
-function callOne() {
+// var interval;
+callOne = () => {
     let myAirtime = JSON.parse(localStorage.getItem("allVouchers"));
     let loadCard = keyScreen.value.slice(0, 5) == "*555*";
     let myData = myAirtime.find((val) => val.cardNo == keyScreen.value.slice(5, 22))
@@ -352,15 +355,20 @@ function callOne() {
                 console.log(myData.cardStatus);
                 let bal = +myData.cardAmount;
                 balances.mtnBal += bal;
+                console.log(balances.mtnBal);
                 localStorage.setItem("acctBalances", JSON.stringify(balances));
-                acctBal.innerHTML = `Recharge successful. Your account has been credited with MTN ${myAirtime.cardAmount}. Your new account bal :₦${balances.mtnBal.toFixed(2)} <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
+                acctBal.innerHTML = `Recharge successful. Your account has been credited with MTN ${myAirtime[i].cardAmount}. Your new account bal :₦${balances.mtnBal.toFixed(2)} <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
                 acctBal.hidden = false;
                 return
-            } else if((loadCard) && (myData) && (keyScreen.value.slice(22, 23) == "#") && (myData.cardType == "MTN") && (myData.cardStatus == "Used")) {
+            } else if ((loadCard) && (myData) && (keyScreen.value.slice(22, 23) == "#") && (myData.cardType == "MTN") && (myData.cardStatus == "Used")) {
                 console.log(myAirtime[i].cardAmount);
                 console.log(keyScreen.value.slice(5, 22));
                 console.log(myData.cardStatus);
-                acctBal.innerHTML = `This card has been loaded by a customer. Thanks!!! <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
+                acctBal.innerHTML = `This card has been loaded by a customer. Thank you!!! <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
+                acctBal.hidden = false;
+                return
+            } else if ((loadCard) && (myData) && (keyScreen.value.slice(22, 23) == "#") && (myData.cardType != "MTN") && (myData.cardStatus == "notUsed")) {
+                acctBal.innerHTML = `This card does not exist. Thank you!!! <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
                 acctBal.hidden = false;
                 return
             }
@@ -374,8 +382,13 @@ function callOne() {
     } else if ((keyScreen.value != "") && (keyScreen.value.length == 11) && ((keyScreen.value.slice(0, 3) == "070") || (keyScreen.value.slice(0, 3) == "080") || (keyScreen.value.slice(0, 3) == "090") || (keyScreen.value.slice(0, 3) == "081"))) {
         let displayBal = JSON.parse(localStorage.getItem("acctBalances"));
         if (displayBal.mtnBal <= 0.50) {
-            acctBal.innerHTML = `Your account balance is too low for this call. You can borrow airtime or call back later. <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
-            acctBal.hidden = false;
+            // acctBal.innerHTML = `Your account balance is too low for this call. You can borrow airtime or call back later. <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
+            // acctBal.hidden = false;
+            lowCredit.play()
+            callScreen.hidden = true;
+            callerId.hidden = false;
+            callers.innerHTML = keyScreen.value;
+            networkId.innerText = `MTN...`;
             return
 
         } else if (displayBal.mtnBal != 0) {
@@ -386,20 +399,18 @@ function callOne() {
             callScreen.hidden = true;
             callerId.hidden = false;
             recieverId.hidden = false;
-            callerTune = new Audio('audio/harris_j_good_life_official_music_video_aac_66534.m4a');
-            callerTune.play();
+            callerTune1.play()
             return
         }
     } else if ((keyScreen.value != "") && (keyScreen.value.length == 11) && ((keyScreen.value.slice(0, 3) != "070") || (keyScreen.value.slice(0, 3) != "080") || (keyScreen.value.slice(0, 3) != "090") || (keyScreen.value.slice(0, 3) != "081"))) {
         callScreen.hidden = true;
         callerId.hidden = false;
-        noError.innerHTML = `This number does not exist.please, check the number and try again later. <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
+        noError.innerHTML = `This number does not exist. please, check the number and try again later. <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
         noError.hidden = false;
         callers.innerHTML = keyScreen.value;
         networkId.innerText = `MTN...`;
         return
-    }
-    else{
+    } else {
         callScreen.hidden = true;
         callerId.hidden = false;
         noError.innerHTML = `This number does not exist.please, check the number and try again later. <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
@@ -409,7 +420,176 @@ function callOne() {
     }
 }
 
+callTwo = () => {
+    let myAirtime = JSON.parse(localStorage.getItem("allVouchers"));
+    let loadCard = keyScreen.value.slice(0, 5) == "*123*";
+    let myData = myAirtime.find((val) => val.cardNo == keyScreen.value.slice(5, 22))
+    if (keyScreen.value.length == 23) {
+        for (let i = 0; i < myAirtime.length; i++) {
+            cardCode = myAirtime[i].cardNo;
+            if ((loadCard) && (myData) && (keyScreen.value.slice(22, 23) == "#") && (myData.cardType == "GLO") && (myData.cardStatus == "notUsed")) {
+                console.log(myAirtime[i].cardAmount);
+                console.log(keyScreen.value.slice(5, 22));
+                myData.cardStatus = "Used";
+                localStorage.setItem("allVouchers", JSON.stringify(myAirtime));
+                let balances = JSON.parse(localStorage.getItem("acctBalances"));
+                console.log(myData.cardStatus);
+                let bal = +myData.cardAmount;
+                balances.gloBal += bal;
+                localStorage.setItem("acctBalances", JSON.stringify(balances));
+                acctBal.innerHTML = `Recharge successful. Your account has been credited with GLO ${myAirtime[i].cardAmount}. Your new account bal :₦${balances.gloBal.toFixed(2)} <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
+                acctBal.hidden = false;
+                return
+            } else if ((loadCard) && (myData) && (keyScreen.value.slice(22, 23) == "#") && (myData.cardType == "GLO") && (myData.cardStatus == "Used")) {
+                console.log(myAirtime[i].cardAmount);
+                console.log(keyScreen.value.slice(5, 22));
+                console.log(myData.cardStatus);
+                acctBal.innerHTML = `This card has been loaded by a customer. Thank you!!! <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
+                acctBal.hidden = false;
+                return
+            } else if ((loadCard) && (myData) && (keyScreen.value.slice(22, 23) == "#") && (myData.cardType != "GLO") && (myData.cardStatus == "notUsed")) {
+                acctBal.innerHTML = `This card does not exist. Thank you!!! <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
+                acctBal.hidden = false;
+                return
+            }
+        }
+    } else if (keyScreen.value.slice(0, 5) == "*124#") {
+        acctBal.hidden = false;
+        let displayBal = JSON.parse(localStorage.getItem("acctBalances"));
+        let showBal = displayBal.gloBal;
+        acctBal.innerHTML = `Your GLO account balance is ₦${showBal.toFixed(2)} <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
+        return
+    } else if ((keyScreen.value != "") && (keyScreen.value.length == 11) && ((keyScreen.value.slice(0, 3) == "070") || (keyScreen.value.slice(0, 3) == "080") || (keyScreen.value.slice(0, 3) == "090") || (keyScreen.value.slice(0, 3) == "081"))) {
+        let displayBal = JSON.parse(localStorage.getItem("acctBalances"));
+        if (displayBal.gloBal <= 0.50) {
+            acctBal.innerHTML = `Your account balance is too low for this call. You can borrow airtime or call back later. <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
+            acctBal.hidden = false;
+            return
 
+        } else if (displayBal.gloBal != 0) {
+            network.innerText = `GLO...`;
+            networkId.innerText = `GLO...`;
+            caller.innerHTML = `08039134204`;
+            callers.innerHTML = keyScreen.value;
+            callScreen.hidden = true;
+            callerId.hidden = false;
+            recieverId.hidden = false;
+            callerTune2.play();
+            return
+        }
+    } else if ((keyScreen.value != "") && (keyScreen.value.length == 11) && ((keyScreen.value.slice(0, 3) != "070") || (keyScreen.value.slice(0, 3) != "080") || (keyScreen.value.slice(0, 3) != "090") || (keyScreen.value.slice(0, 3) != "081"))) {
+        callScreen.hidden = true;
+        callerId.hidden = false;
+        noError.innerHTML = `This number does not exist.please, check the number and try again later. <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
+        noError.hidden = false;
+        callers.innerHTML = keyScreen.value;
+        networkId.innerText = `GLO...`;
+        return
+    } else {
+        callScreen.hidden = true;
+        callerId.hidden = false;
+        noError.innerHTML = `This number does not exist.please, check the number and try again later. <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
+        noError.hidden = false;
+        callers.innerHTML = keyScreen.value;
+        networkId.innerText = `GLO...`;
+    }
+}
+let durationSec = 0;
+let durationMin = 0;
+let durationHr = 0;
+let interval;
+dur.hidden = true;
+durs.hidden = true;
+let trier = 200;
+let balances = JSON.parse(localStorage.getItem("acctBalances"));
+console.log(balances.mtnBal);
+
+receiveCall = () => {
+    callerTune1.pause()
+    callerTune1.currentTime = 0;
+    callerTune2.pause()
+    callerTune2.currentTime = 0;
+    dur.hidden = false;
+    durs.hidden = false;
+    on.hidden = true;
+    ons.hidden = true;
+    reccall.hidden = true;
+    console.log(network.innerHTML);
+    interval = setInterval(() => {
+        durationSec++;
+        if (network.innerHTML == "MTN...") {
+            let amt = Number(balances.mtnBal) - (Number(durationSec) * 0.11);
+            balances.mtnBal = +amt.toFixed(2);
+            console.log(balances.mtnBal);
+            localStorage.setItem("acctBalances", JSON.stringify(balances))
+            // return; 
+        }
+        if (network.innerHTML == "GLO...") {
+            let amt = Number(balances.gloBal) - (Number(durationSec) * 0.11);
+            balances.gloBal = +amt.toFixed(2);
+            console.log(balances.gloBal);
+            localStorage.setItem("acctBalances", JSON.stringify(balances))
+            // return;
+        }
+        secs.innerHTML = durationSec;
+        mins.innerHTML = durationMin;
+        hrs.innerHTML = durationHr;
+        secss.innerHTML = durationSec;
+        minss.innerHTML = durationMin;
+        hrss.innerHTML = durationHr;
+        if (durationSec == 59) {
+            durationSec = 0;
+            durationMin++
+            if (durationMin == 59) {
+                durationMin = 0
+                durationHr++
+            }
+        }
+        return
+    }, 1000)
+}
+// For MTN per sec = 0.11k, per min = #6.6, per hr =
+
+endCall = () => {
+    clearInterval(interval);
+    callerTune1.pause();
+    callerTune1.currentTime = 0;
+    callerTune2.pause()
+    callerTune2.currentTime = 0;
+    lowCredit.pause();
+    lowCredit.currentTime = 0;
+    let totalSec = Number(durationHr) * 60 + Number(durationMin) * 60 + Number(durationSec)
+    console.log(durationSec);
+    console.log(totalSec);
+    durationSec = 0;
+    durationMin = 0;
+    durationHr = 0;
+    if (network.innerHTML == "MTN...") {
+        acctBal.innerHTML = `Your last call session was ${totalSec} secs and your MTN account balance is :₦${balances.mtnBal.toFixed(2)} <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
+        acctBal.hidden = false;
+        recieverId.hidden = true;
+        callerId.hidden = true;
+        callScreen.hidden = false;
+        // durationSec = 0;
+        // durationMin = 0;
+        // durationHr = 0;
+        // return;
+    }
+    if (network.innerHTML == "GLO...") {
+        acctBal.innerHTML = `Your last call session was ${totalSec} secs and your GLO account balance is :₦${balances.gloBal.toFixed(2)} <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
+        acctBal.hidden = false;
+        recieverId.hidden = true;
+        callerId.hidden = true;
+        callScreen.hidden = false;
+        console.log(durationSec);
+        // durationSec = 0;
+        // durationMin = 0;
+        // durationHr = 0;
+        // return;
+    }
+    console.log(durtionSec);
+    // return
+}
 hide = () => {
     acctBal.hidden = true;
     noError.hidden = true;
