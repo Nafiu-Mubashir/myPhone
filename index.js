@@ -382,8 +382,6 @@ callOne = () => {
     } else if ((keyScreen.value != "") && (keyScreen.value.length == 11) && ((keyScreen.value.slice(0, 3) == "070") || (keyScreen.value.slice(0, 3) == "080") || (keyScreen.value.slice(0, 3) == "090") || (keyScreen.value.slice(0, 3) == "081"))) {
         let displayBal = JSON.parse(localStorage.getItem("acctBalances"));
         if (displayBal.mtnBal <= 0.50) {
-            // acctBal.innerHTML = `Your account balance is too low for this call. You can borrow airtime or call back later. <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
-            // acctBal.hidden = false;
             lowCredit.play()
             callScreen.hidden = true;
             callerId.hidden = false;
@@ -505,91 +503,127 @@ let balances = JSON.parse(localStorage.getItem("acctBalances"));
 console.log(balances.mtnBal);
 
 receiveCall = () => {
-    callerTune1.pause()
+    // Stop caller tunes when call is received
+    callerTune1.pause();
     callerTune1.currentTime = 0;
-    callerTune2.pause()
+    callerTune2.pause();
     callerTune2.currentTime = 0;
+
+    // Show Call Duration Timer
     dur.hidden = false;
     durs.hidden = false;
     on.hidden = true;
     ons.hidden = true;
     reccall.hidden = true;
+
     console.log(network.innerHTML);
+
+    // Start Call Timer & Deduct Balance
     interval = setInterval(() => {
         durationSec++;
-        if (network.innerHTML == "MTN...") {
-            let amt = Number(balances.mtnBal) - (Number(durationSec) * 0.11);
-            balances.mtnBal = +amt.toFixed(2);
-            console.log(balances.mtnBal);
-            localStorage.setItem("acctBalances", JSON.stringify(balances))
-            // return; 
-        }
-        if (network.innerHTML == "GLO...") {
-            let amt = Number(balances.gloBal) - (Number(durationSec) * 0.11);
-            balances.gloBal = +amt.toFixed(2);
-            console.log(balances.gloBal);
-            localStorage.setItem("acctBalances", JSON.stringify(balances))
-            // return;
-        }
-        secs.innerHTML = durationSec;
+
+        // Update Timer UI
         mins.innerHTML = durationMin;
         hrs.innerHTML = durationHr;
         secss.innerHTML = durationSec;
         minss.innerHTML = durationMin;
         hrss.innerHTML = durationHr;
+        secs.innerHTML = durationSec;
+
+        // Reset seconds and increment minutes/hours
         if (durationSec == 59) {
             durationSec = 0;
-            durationMin++
+            durationMin++;
             if (durationMin == 59) {
-                durationMin = 0
-                durationHr++
+                durationMin = 0;
+                durationHr++;
             }
         }
-        return
-    }, 1000)
-}
-// For MTN per sec = 0.11k, per min = #6.6, per hr =
 
+        // Define Tariff Rate per Second
+        let tariffRate = 0.11; // Adjust if necessary
+
+        // Deduct balance for MTN
+        if (network.innerHTML == "MTN...") {
+            let amt = Number(balances.mtnBal) - tariffRate;
+            balances.mtnBal = +amt.toFixed(2);
+            console.log(`MTN Balance: ₦${balances.mtnBal}`);
+
+            // Save Updated Balance
+            localStorage.setItem("acctBalances", JSON.stringify(balances));
+
+            // Stop call when balance is too low
+            if (balances.mtnBal <= 0.5) {
+                endCall();
+                console.log("Call Ended: Insufficient Balance");
+                return;
+            }
+        }
+
+        // Deduct balance for GLO
+        if (network.innerHTML == "GLO...") {
+            let amt = Number(balances.gloBal) - tariffRate;
+            balances.gloBal = +amt.toFixed(2);
+            console.log(`GLO Balance: ₦${balances.gloBal}`);
+
+            // Save Updated Balance
+            localStorage.setItem("acctBalances", JSON.stringify(balances));
+
+            // Stop call when balance is too low
+            if (balances.gloBal <= 0.5) {
+                endCall();
+                console.log("Call Ended: Insufficient Balance");
+                return;
+            }
+        }
+
+    }, 1000); // Call charges are deducted per second
+};
+
+
+// Function to End Call
 endCall = () => {
-    clearInterval(interval);
+    clearInterval(interval); // Stop Call Timer
+
+    // Stop Sounds
     callerTune1.pause();
     callerTune1.currentTime = 0;
-    callerTune2.pause()
+    callerTune2.pause();
     callerTune2.currentTime = 0;
     lowCredit.pause();
     lowCredit.currentTime = 0;
-    let totalSec = Number(durationHr) * 60 + Number(durationMin) * 60 + Number(durationSec)
-    console.log(durationSec);
-    console.log(totalSec);
+
+    // Calculate Total Call Duration
+    let totalSec = Number(durationHr) * 3600 + Number(durationMin) * 60 + Number(durationSec);
+
+    console.log(`Call Duration: ${durationSec} seconds`);
+    console.log(`Total Seconds: ${totalSec} sec`);
+
+    // Reset Duration
     durationSec = 0;
     durationMin = 0;
     durationHr = 0;
+
+    // Display Balance and Call Summary
     if (network.innerHTML == "MTN...") {
-        acctBal.innerHTML = `Your last call session was ${totalSec} secs and your MTN account balance is :₦${balances.mtnBal.toFixed(2)} <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
-        acctBal.hidden = false;
-        recieverId.hidden = true;
-        callerId.hidden = true;
-        callScreen.hidden = false;
-        // durationSec = 0;
-        // durationMin = 0;
-        // durationHr = 0;
-        // return;
+        acctBal.innerHTML = `Your last call session was ${totalSec} secs and your MTN account balance is : ₦${balances.mtnBal.toFixed(2)} <br><br> 
+        <button class="btn btn-primary" onclick="hide()">Ok</button>`;
     }
+
     if (network.innerHTML == "GLO...") {
-        acctBal.innerHTML = `Your last call session was ${totalSec} secs and your GLO account balance is :₦${balances.gloBal.toFixed(2)} <br><br> <button class="btn btn-primary" onclick="hide()">Ok</button>`;
-        acctBal.hidden = false;
-        recieverId.hidden = true;
-        callerId.hidden = true;
-        callScreen.hidden = false;
-        console.log(durationSec);
-        // durationSec = 0;
-        // durationMin = 0;
-        // durationHr = 0;
-        // return;
+        acctBal.innerHTML = `Your last call session was ${totalSec} secs and your GLO account balance is : ₦${balances.gloBal.toFixed(2)} <br><br> 
+        <button class="btn btn-primary" onclick="hide()">Ok</button>`;
     }
-    console.log(durtionSec);
-    // return
-}
+
+    // Show Call Summary
+    acctBal.hidden = false;
+    recieverId.hidden = true;
+    callerId.hidden = true;
+    callScreen.hidden = false;
+    callerId.hidden = true;
+    reccall.hidden = false;
+};
+
 hide = () => {
     acctBal.hidden = true;
     noError.hidden = true;
